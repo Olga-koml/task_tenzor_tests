@@ -9,8 +9,5 @@
  - Установить зависимости:
    - `pip install -r requirements.txt`
  
- - Установить pytest в venv foodgram проект:
-   - `pip install pytest`
-
  - Запустить тест из корневой дирректории проекта:
    - `pytest`

@@ -1,4 +1,4 @@
-from base_page import BasePage
+from pages.base_page import BasePage
 from selenium.webdriver.common.by import By
 import time
 from selenium import webdriver
@@ -20,7 +20,10 @@ class TenzorSeacrhLocators:
     LOCATOR_SEARCH_RESULTS_BY_CSS = (By.CSS_SELECTOR, 'ul[class*=serp-list]>li>div>div>div>a>b')
 
 
-class TenzorSearch(BasePage):
+class TenzorSearchPage(BasePage):
+
+    def __init__(self, driver):  # lskdjfls
+        super().__init__(driver)  # введены недавно
 
     def enter_word(self, word):
         search_field = self.find_element(TenzorSeacrhLocators.LOCATOR_YANDEX_SEARCH_FIELD)

@@ -32,8 +32,25 @@ class BasePage:
     def go_to_site(self):
         return self.driver.get(self.base_url)
     
-    # def click_enter(self, locator, time=10):
-    #     return WebDriverWait(self.driver, time).until(EC.visibility_of_element_located(locator)).send_keys(Keys.RETURN)
+# c site video
+    # def do_click(self, locator, time_out=10):
+    #     WebDriverWait(self.driver, time_out).until(
+    #         EC.visibility_of_element_located(locator)
+    #         ).click()
+        
+    # def send_keys(self, locator, time_out=10, text):
+    #     WebDriverWait(self.driver, time_out).until(
+    #         EC.visibility_of_element_located(locator)
+    #         ).send_keys(text)
+        
+    # def get_element_text(self, locator, time_out=10):
+    #     element = WebDriverWait(self.driver, time_out).until(EC.visibility_of_element_located(locator))
+    #     return element.text
     
-        # def click_enter(self):
-    #     return self.send_keys(Keys.RETURN))
+    # def is_visible(self, locator, time_out=10):
+    #     element = WebDriverWait(self.driver, time_out).until(EC.visibility_of_element_located(locator))
+    #     return bool(element)
+    
+    # def get_title(self, title, time_out=10):
+    #     WebDriverWait(self.driver, time_out).until(EC.title_is(title))
+    #     return self.driver.title

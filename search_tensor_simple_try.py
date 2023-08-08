@@ -1,3 +1,10 @@
+# Рабочий код для начала работы. 
+# Автоматизация и проверки: открывает сайт ya.ru - проверяется есть ли строка поиска, 
+# в поиск вводит Тензор, проверяет появляется ли таблица с подсказками, нажимает ентер,
+# проверяет нашлось ли что-то, отобразилась ли страница результатов поиска, есть ли сайт 
+# tensor.ru в результатах поиска, ведет ли первая ссылка на этот сайт
+
+
 import time
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -7,14 +14,11 @@ from selenium.webdriver.common.keys import Keys
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException
+import sys
  
 
-
 options = Options()
-# options.add_argument('--headless')
-# options.add_argument('--no-sandbox')
-# options.add_argument('--disable-dev-shm-usage')
-# options.add_argument('--incognito')
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 driver.maximize_window() # увеличивает окно браузера
 driver.get('https://ya.ru/')
@@ -28,9 +32,10 @@ try:
     print('Строка поиска найдена')
 except:
     print('Строка поиска не доступна')
-time.sleep(10)
+# time.sleep(10)
 
 search_string.send_keys('Тензор')
+
 try:
     suggest= driver.find_element(By.CSS_SELECTOR, 'ul[class*=mini-suggest]')
     assert suggest.is_displayed()
@@ -38,20 +43,28 @@ try:
 except:
     print('Таблица с подсказками suggest не видна пользователю')
 
-
 search_string.send_keys(Keys.RETURN)
-# time.sleep(10)
-# WebDriverWait(driver, 10).until(
-#         EC.presence_of_element_located)
+time.sleep(10)
+
+# with open('filename.txt', 'w') as f:
+#     sys.stdout = f # Change the standard output to the file we created.
+#     print(driver.page_source)
+    # sys.stdout = original_stdout 
+try:
+    assert "Ничего не нашли" not in driver.page_source
+    print('что-то нашлось')
+except:
+    print('NOTFOUND')
 
 body = driver.find_element(By.TAG_NAME, 'body')
 html = body.get_attribute('innerHTML')
+
 
 try:
     assert body.is_displayed()
     print('Cтраница результатов поиска отобразилась')
 except:
-    print('Cтраница результатов поиска отобразилась')
+    print('Cтраница результатов поиска не отобразилась')
 
 
 try:

@@ -1,8 +1,11 @@
 from selenium.webdriver.common.by import By
+
 from pages.images_page import ImageSearchPage
 
 
 class Locator:
+    '''Вспомогательны класс с данными для поиска картинок.'''
+
     LOCATOR_YANDEX_SEARCH_FIELD = (By.NAME, 'text')
     LOCATOR_YANDEX_MENU = (By.CSS_SELECTOR, 'a[title*="Все сервисы"]')
     LOCATOR_YANDEX_PICTURES = (By.LINK_TEXT, "Картинки")
@@ -19,18 +22,24 @@ class Locator:
         By.CSS_SELECTOR, 'div[class*=CircleButton_type_prev]'
         )
     PICTURES_URL = 'https://ya.ru/images/'
+    NUMDER_OF_SECOND_WINDOW = 1
 
 
 def test_search_image(browser):
+    '''Тестирующая функция для проверки поиска и отображения картинок.'''
+
     page = ImageSearchPage(browser)
-    page.go_to_site()  #  может убрать?)
-    search_bar = page.find_element(Locator.LOCATOR_YANDEX_SEARCH_FIELD)
-    search_bar.click()
-    menu_bar = page.find_element(Locator.LOCATOR_YANDEX_MENU)
-    menu_bar.click()
-    images = page.find_element(Locator.LOCATOR_YANDEX_PICTURES)
-    images.click()
-    page.switch_to_window(1)
+    page.go_to_site()
+    page.find_and_click_element(Locator.LOCATOR_YANDEX_SEARCH_FIELD)
+    menu_bar = page.check_menu_bar_on_page()
+
+    assert menu_bar is not None, (
+        'Кнопка меню(все сервисы) не видна на странице'
+        )
+
+    page.do_click(Locator.LOCATOR_YANDEX_MENU)
+    page.find_and_click_element(Locator.LOCATOR_YANDEX_PICTURES)
+    page.switch_to_window(Locator.NUMDER_OF_SECOND_WINDOW)
     current_url_site = page.current_url()
 
     assert Locator.PICTURES_URL == current_url_site, (
@@ -50,26 +59,23 @@ def test_search_image(browser):
         f'с введенным значением в поле ввода {input_field_text}'
     )
 
-    picture = page.find_element(Locator.LOCATOR_FIRST_PICTURE)
-    picture.click()
+    page.find_and_click_element(Locator.LOCATOR_FIRST_PICTURE)
     picture_prev = page.find_element(Locator.LOCATOR_PICTURE_PREVIEW)
     picture_size = picture_prev.size.get('height')
 
     assert picture_size > 0, ('Картинка не отобразилась')
 
     picture_prev = picture_prev.get_attribute('src')
-    button_next = page.find_element(Locator.LOCATOR_BUTTON_NEXT)
-    button_next.click()
+    page.find_and_click_element(Locator.LOCATOR_BUTTON_NEXT)
     picture_next = page.find_element(Locator.LOCATOR_PICTURE_PREVIEW)
     picture_next = picture_next.get_attribute('src')
 
     assert picture_next != picture_prev, (
-        f'Картинка не сменилась: {picture_next} '
+        f'Картинка не сменилась последующаяй картинка: {picture_next} '
         f'совпадает с предыдующей картинкой{picture_prev}'
     )
 
-    button_prev = page.find_element(Locator.LOCATOR_BUTTON_PREV)
-    button_prev.click()
+    page.find_and_click_element(Locator.LOCATOR_BUTTON_PREV)
     picture_before = page.find_element(Locator.LOCATOR_PICTURE_PREVIEW)
     picture_before = picture_before.get_attribute('src')
 

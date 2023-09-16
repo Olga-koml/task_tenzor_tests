@@ -7,9 +7,8 @@
    - `git clone git@github.com:Olga-koml/task_tenzor_tests.git`
  - Установить виртуальное окружение:
    - `python -m venv venv`
-  - Активировать окружение:
-   - `source venv/Scripts/activate`  или
-   - `source venv/bin/activate`
+ - Активировать окружение:
+   - `source venv/Scripts/activate`  или  `source venv/bin/activate`
  - Установить зависимости:
    - `pip install -r requirements.txt`
  
